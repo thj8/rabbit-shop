@@ -9,7 +9,9 @@ const onChange: UniHelper.SwiperOnChange = (ev) => {
   activeIndex.value = ev.detail!.current
 }
 
-defineProps<{ list: BannerItem[] }>()
+defineProps<{
+  list: BannerItem[]
+}>()
 </script>
 
 <template>
