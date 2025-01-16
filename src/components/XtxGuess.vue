@@ -55,13 +55,20 @@ const getHomeGoodGuessLikeData = async () => {
   }
 }
 
-// 组件挂在完毕
+const resetData = () => {
+  pagaParams.page = 1
+  guestList.value = []
+  finish.value = false
+}
+
+// 组件挂载完毕
 onMounted(() => {
   getHomeGoodGuessLikeData()
 })
 
 // 暴露方法
 defineExpose({
+  resetData,
   getMore: getHomeGoodGuessLikeData,
 })
 </script>

@@ -80,8 +80,13 @@ const onRefresherrefresh = async () => {
   // await getHomeBannerData()
   // await getCategroyPanelData()
   // await getHotPanelData()
-
-  await Promise.all([getHomeBannerData(), getCategroyPanelData(), getHotPanelData()])
+  guessRef.value?.resetData()
+  await Promise.all([
+    getHomeBannerData(),
+    getCategroyPanelData(),
+    getHotPanelData(),
+    guessRef.value?.getMore(),
+  ])
   // 关闭动画
   isTriggered.value = false
 }
