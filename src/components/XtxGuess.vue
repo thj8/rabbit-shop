@@ -1,7 +1,3 @@
-<script setup lang="ts">
-//
-</script>
-
 <template>
   <!-- 猜你喜欢 -->
   <view class="caption">
@@ -10,24 +6,36 @@
   <view class="guess">
     <navigator
       class="guess-item"
-      v-for="item in 10"
-      :key="item"
+      v-for="item in guestList"
+      :key="item.id"
       :url="`/pages/goods/goods?id=4007498`"
     >
-      <image
-        class="image"
-        mode="aspectFill"
-        src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/uploads/goods_big_1.jpg"
-      ></image>
-      <view class="name"> 德国THORE男表 超薄手表男士休闲简约夜光石英防水直径40毫米 </view>
+      <image class="image" mode="aspectFill" :src="item.picture"></image>
+      <view class="name"> {{ item.desc }} </view>
       <view class="price">
         <text class="small">¥</text>
-        <text>899.00</text>
+        <text>{{ item.price }}</text>
       </view>
     </navigator>
   </view>
   <view class="loading-text"> 正在加载... </view>
 </template>
+
+<script setup lang="ts">
+import { getHomeGuessLikeAPI } from '@/services/home'
+import type { GuessItem } from '@/types/home'
+import { onMounted, ref } from 'vue'
+
+const guestList = ref<GuessItem[]>([])
+const getHomeGoodGuessLikeData = async () => {
+  const res = await getHomeGuessLikeAPI()
+  guestList.value = res.result!.items
+}
+
+onMounted(() => {
+  getHomeGoodGuessLikeData()
+})
+</script>
 
 <style lang="scss">
 :host {
