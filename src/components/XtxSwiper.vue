@@ -1,19 +1,3 @@
-<script setup lang="ts">
-import type { BannerItem } from '@/types/home'
-import { ref } from 'vue'
-
-const activeIndex = ref(0)
-
-const onChange: UniHelper.SwiperOnChange = (ev) => {
-  // !非空断言，主观上排除空值
-  activeIndex.value = ev.detail!.current
-}
-
-defineProps<{
-  list: BannerItem[]
-}>()
-</script>
-
 <template>
   <view class="carousel">
     <swiper :circular="true" :autoplay="false" :interval="3000" @change="onChange">
@@ -34,6 +18,22 @@ defineProps<{
     </view>
   </view>
 </template>
+
+<script setup lang="ts">
+import type { BannerItem } from '@/types/home'
+import { ref } from 'vue'
+
+const activeIndex = ref(0)
+
+const onChange: UniHelper.SwiperOnChange = (ev) => {
+  // !非空断言，主观上排除空值
+  activeIndex.value = ev.detail!.current
+}
+
+defineProps<{
+  list: BannerItem[]
+}>()
+</script>
 
 <style lang="scss">
 :host {
