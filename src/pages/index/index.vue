@@ -1,3 +1,22 @@
+<template>
+  <!--导航栏-->
+  <CustomNavbar></CustomNavbar>
+
+  <scroll-view @scrolltolower="onScrolltolower" class="scroll-view" scroll-y>
+    <!--轮播-->
+    <XtxSwiper :list="bannerList"></XtxSwiper>
+
+    <!--分类面板-->
+    <CategroyPanel :list="categoryList"></CategroyPanel>
+
+    <!--热门推荐-->
+    <HotPanel :list="hotList"></HotPanel>
+
+    <!--猜你喜欢-->
+    <XtxGuess ref="guessRef"></XtxGuess>
+  </scroll-view>
+</template>
+
 <script setup lang="ts">
 import { getHomeBannerAPI, getCategroyPanelAPI, getHotPanelAPI } from '@/services/home'
 
@@ -8,6 +27,7 @@ import HotPanel from './components/HotPanel.vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
+import type { XtxGuessInstance } from '@/components/components'
 
 // 获取轮播数据
 const bannerList = ref<BannerItem[]>([])
@@ -35,26 +55,14 @@ onLoad(() => {
   getCategroyPanelData()
   getHotPanelData()
 })
+
+// 获取猜你喜欢组件实例
+const guessRef = ref<XtxGuessInstance>()
+// 滚动触底了
+const onScrolltolower = () => {
+  guessRef.value?.getMore()
+}
 </script>
-
-<template>
-  <!--导航栏-->
-  <CustomNavbar></CustomNavbar>
-
-  <scroll-view class="scroll-view" scroll-y>
-    <!--轮播-->
-    <XtxSwiper :list="bannerList"></XtxSwiper>
-
-    <!--分类面板-->
-    <CategroyPanel :list="categoryList"></CategroyPanel>
-
-    <!--热门推荐-->
-    <HotPanel :list="hotList"></HotPanel>
-
-    <!--猜你喜欢-->
-    <XtxGuess></XtxGuess>
-  </scroll-view>
-</template>
 
 <style lang="scss">
 page {

@@ -18,22 +18,51 @@
       </view>
     </navigator>
   </view>
-  <view class="loading-text"> 正在加载... </view>
+  <view class="loading-text">
+    {{ finish ? '没有更多数据' : '正在加载...' }}
+  </view>
 </template>
 
 <script setup lang="ts">
 import { getHomeGuessLikeAPI } from '@/services/home'
+import type { PageParams } from '@/types/global'
 import type { GuessItem } from '@/types/home'
 import { onMounted, ref } from 'vue'
 
-const guestList = ref<GuessItem[]>([])
-const getHomeGoodGuessLikeData = async () => {
-  const res = await getHomeGuessLikeAPI()
-  guestList.value = res.result!.items
+// 分页参数
+const pagaParams: Required<PageParams> = {
+  page: 1,
+  pageSize: 10,
 }
 
+// 猜你喜欢的列表
+const guestList = ref<GuessItem[]>([])
+const finish = ref(false)
+// 获取猜你喜欢数据
+const getHomeGoodGuessLikeData = async () => {
+  if (!finish.value) {
+    const res = await getHomeGuessLikeAPI(pagaParams)
+    // guestList.value = res.result!.items
+    // 数组的追加
+    guestList.value.push(...res.result!.items)
+    if (pagaParams.page < res.result.pages) {
+      pagaParams.page++
+    } else {
+      finish.value = true
+    }
+  } else {
+    return uni.showToast({ icon: 'none', title: '没有更多数据' })
+  }
+}
+
+// 组件挂在完毕
 onMounted(() => {
   getHomeGoodGuessLikeData()
+})
+
+// 暴露方法
+defineExpose({
+  getMore: getHomeGoodGuessLikeData,
 })
 </script>
 
