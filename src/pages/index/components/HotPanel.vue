@@ -1,11 +1,3 @@
-<script setup lang="ts">
-import type { HotItem } from '@/types/home'
-
-defineProps<{
-  list: HotItem[]
-}>()
-</script>
-
 <template>
   <!-- 推荐专区 -->
   <view class="panel hot">
@@ -26,6 +18,14 @@ defineProps<{
     </view>
   </view>
 </template>
+
+<script setup lang="ts">
+import type { HotItem } from '@/types/home'
+
+defineProps<{
+  list: HotItem[]
+}>()
+</script>
 
 <style lang="scss">
 /* 热门推荐 */
