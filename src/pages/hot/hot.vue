@@ -42,7 +42,9 @@
           </view>
         </navigator>
       </view>
-      <view class="loading-text">正在加载...</view>
+      <view class="loading-text">
+        {{ item.finish ? '没有更多数据了' : '正在加载...' }}
+      </view>
     </scroll-view>
   </view>
 </template>
@@ -72,12 +74,15 @@ uni.setNavigationBarTitle({ title: currUrlMap!.title })
 // 推荐封面图
 const bannerPicture = ref('')
 // 推荐选项
-const subTypes = ref<SubTypeItem[]>([])
+const subTypes = ref<(SubTypeItem & { finish?: boolean })[]>([])
 // 高亮的下标
 const activeIdx = ref(0)
 // 获取热门推荐数据
 const getHotRecommendData = async () => {
-  const res = await getHotRecommendAPI(currUrlMap!.url)
+  const res = await getHotRecommendAPI(currUrlMap!.url, {
+    pageSize: 10,
+    page: import.meta.env.DEV ? 30 : 1,
+  })
   bannerPicture.value = res.result.bannerPicture
   subTypes.value = res.result.subTypes
 }
@@ -89,20 +94,27 @@ onLoad(() => {
 
 const onScrolltolower = async () => {
   // 获取当前选项
-  const currsubType = subTypes.value[activeIdx.value]
-  // 当前页码累加
-  currsubType.goodsItems.page++
+  const currsubTypes = subTypes.value[activeIdx.value]
+  // 分页条件
+  if (currsubTypes.goodsItems.page < currsubTypes.goodsItems.pages) {
+    // 当前页码累加
+    currsubTypes.goodsItems.page++
+  } else {
+    // 退出并提示
+    currsubTypes.finish = true
+    return uni.showToast({ icon: 'none', title: '没有更多数据了' })
+  }
 
   // 获取新的数据
   const res = await getHotRecommendAPI(currUrlMap!.url, {
-    subType: currsubType.id,
-    page: currsubType.goodsItems.page,
-    pageSize: currsubType.goodsItems.pageSize,
+    subType: currsubTypes.id,
+    page: currsubTypes.goodsItems.page,
+    pageSize: currsubTypes.goodsItems.pageSize,
   })
 
   // 追加新的数据
   const newSubTypes = res.result.subTypes[activeIdx.value]
-  currsubType.goodsItems.items.push(...newSubTypes.goodsItems.items)
+  currsubTypes.goodsItems.items.push(...newSubTypes.goodsItems.items)
 }
 </script>
 
