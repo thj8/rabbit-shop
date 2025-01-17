@@ -77,9 +77,6 @@ const onRefresherrefresh = async () => {
   isTriggered.value = true
 
   // 加载数据
-  // await getHomeBannerData()
-  // await getCategroyPanelData()
-  // await getHotPanelData()
   guessRef.value?.resetData()
   await Promise.all([
     getHomeBannerData(),
