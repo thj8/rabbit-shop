@@ -24,6 +24,7 @@
       v-show="activeIdx === idx"
       scroll-y
       class="scroll-view"
+      @scrolltolower="onScrolltolower"
     >
       <view class="goods">
         <navigator
@@ -85,6 +86,24 @@ const getHotRecommendData = async () => {
 onLoad(() => {
   getHotRecommendData()
 })
+
+const onScrolltolower = async () => {
+  // 获取当前选项
+  const currsubType = subTypes.value[activeIdx.value]
+  // 当前页码累加
+  currsubType.goodsItems.page++
+
+  // 获取新的数据
+  const res = await getHotRecommendAPI(currUrlMap!.url, {
+    subType: currsubType.id,
+    page: currsubType.goodsItems.page,
+    pageSize: currsubType.goodsItems.pageSize,
+  })
+
+  // 追加新的数据
+  const newSubTypes = res.result.subTypes[activeIdx.value]
+  currsubType.goodsItems.items.push(...newSubTypes.goodsItems.items)
+}
 </script>
 
 <style lang="scss">
