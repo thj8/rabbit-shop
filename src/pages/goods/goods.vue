@@ -4,15 +4,15 @@
     <view class="goods">
       <!-- 商品主图 -->
       <view class="preview">
-        <swiper circular>
+        <swiper @change="onSwiperChange" circular>
           <swiper-item v-for="item in goods?.mainPictures" :key="item">
-            <image mode="aspectFill" :src="item" />
+            <image @tap="onTapImage(item)" mode="aspectFill" :src="item" />
           </swiper-item>
         </swiper>
         <view class="indicator">
-          <text class="current">1</text>
+          <text class="current">{{ currentSwiperIdx + 1 }}</text>
           <text class="split">/</text>
-          <text class="total">5</text>
+          <text class="total">{{ goods?.mainPictures.length }}</text>
         </view>
       </view>
 
@@ -130,6 +130,21 @@ const getGoodByIdData = async () => {
 onLoad(() => {
   getGoodByIdData()
 })
+
+// 轮播图变化时
+const currentSwiperIdx = ref(0)
+const onSwiperChange: UniHelper.SwiperOnChange = (ev) => {
+  currentSwiperIdx.value = ev.detail!.current
+}
+
+// 点击图片时
+const onTapImage = (url: string) => {
+  // 大图预览
+  uni.previewImage({
+    current: url,
+    urls: goods.value!.mainPictures,
+  })
+}
 </script>
 
 <style lang="scss">
