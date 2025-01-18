@@ -11,14 +11,20 @@
     <view class="categories">
       <!-- 左侧一级分类 -->
       <scroll-view scroll-y class="primary">
-        <view v-for="(item, index) in 10" :key="item" class="item" :class="{ active: index === 0 }">
-          <text class="name"> 居家 </text>
+        <view
+          v-for="(item, index) in categoryList"
+          :key="item.id"
+          class="item"
+          :class="{ active: index === activeIndex }"
+          @tap="activeIndex = index"
+        >
+          <text class="name"> {{ item.name }} </text>
         </view>
       </scroll-view>
 
       <!-- 右侧 二级分类 -->
       <scroll-view class="secondary" scroll-y>
-        <XtxSwiper class="banner" :list="[]"></XtxSwiper>
+        <XtxSwiper class="banner" :list="bannerList"></XtxSwiper>
         <view class="panel" v-for="item in 3" :key="item">
           <view class="title">
             <text class="name">宠物用品</text>
@@ -50,9 +56,31 @@
 </template>
 
 <script setup lang="ts">
-import XtxSwiper from '@/components/XtxSwiper.vue'
+import { getCategoryTopAPI } from '@/services/category'
+import { getHomeBannerAPI } from '@/services/home'
+import type { CategoryTopItem } from '@/types/category'
+import type { BannerItem } from '@/types/home'
+import { onLoad } from '@dcloudio/uni-app'
+import { ref } from 'vue'
 
-//
+// 获取轮播图数据
+const bannerList = ref<BannerItem[]>([])
+const getBannerData = async () => {
+  const rest = await getHomeBannerAPI(2)
+  bannerList.value = rest.result
+}
+
+// 获取分类列表数据
+const categoryList = ref<CategoryTopItem[]>([])
+const activeIndex = ref(0)
+const getCategoryTopData = async () => {
+  const res = await getCategoryTopAPI()
+  categoryList.value = res.result
+}
+onLoad(() => {
+  getBannerData()
+  getCategoryTopData()
+})
 </script>
 
 <style lang="scss">
