@@ -96,3 +96,17 @@ npm run dev:h5
 ├── tsconfig.json              # typescript 配置
 └── vite.config.ts             # vite 配置
 ```
+
+# 截图
+
+![202501201144021737344642](https://tinyfat.oss-cn-shanghai.aliyuncs.com/uPic/202501201144021737344642.png)
+
+![202501201144261737344666](https://tinyfat.oss-cn-shanghai.aliyuncs.com/uPic/202501201144261737344666.png)
+
+![202501201142561737344576](https://tinyfat.oss-cn-shanghai.aliyuncs.com/uPic/202501201142561737344576.png)
+
+![202501201143171737344597](https://tinyfat.oss-cn-shanghai.aliyuncs.com/uPic/202501201143171737344597.png)
+
+![202501201143341737344614](https://tinyfat.oss-cn-shanghai.aliyuncs.com/uPic/202501201143341737344614.png)
+
+![202501201143481737344628](https://tinyfat.oss-cn-shanghai.aliyuncs.com/uPic/202501201143481737344628.png)
