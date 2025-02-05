@@ -34,7 +34,7 @@ import HotPanel from './components/HotPanel.vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
-import type { XtxGuessInstance } from '@/components/components'
+import { useGuessLike } from '@/composables'
 
 // 获取轮播数据
 const bannerList = ref<BannerItem[]>([])
@@ -63,12 +63,7 @@ onLoad(() => {
   getHotPanelData()
 })
 
-// 获取猜你喜欢组件实例
-const guessRef = ref<XtxGuessInstance>()
-// 滚动触底了
-const onScrolltolower = () => {
-  guessRef.value?.getMore()
-}
+const { guessRef, onScrolltolower } = useGuessLike()
 
 const isTriggered = ref(false)
 // 自定义下拉刷新被触发
