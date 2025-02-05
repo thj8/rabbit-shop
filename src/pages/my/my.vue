@@ -3,13 +3,13 @@
     <!-- 个人资料 -->
     <view class="profile" :style="{ paddingTop: safeAreaInsets!.top + 'px' }">
       <!-- 情况1：已登录 -->
-      <view class="overview" v-if="memStore.profile">
+      <view class="overview" v-if="memberStore.profile">
         <navigator url="/pagesMember/profile/profile" hover-class="none">
-          <image class="avatar" mode="aspectFill" :src="memStore.profile.avatar"></image>
+          <image class="avatar" mode="aspectFill" :src="memberStore.profile.avatar"></image>
         </navigator>
         <view class="meta">
           <view class="nickname">
-            {{ memStore.profile.nickname || memStore.profile.account }}
+            {{ memberStore.profile.nickname || memberStore.profile.account }}
           </view>
           <navigator class="extra" url="/pagesMember/profile/profile" hover-class="none">
             <text class="update">更新头像昵称</text>
@@ -84,7 +84,7 @@ const orderTypes = [
 ]
 
 // 获取会员信息
-const memStore = useMemberStore()
+const memberStore = useMemberStore()
 
 const { guessRef, onScrolltolower } = useGuessLike()
 </script>
