@@ -8,7 +8,7 @@
     </view>
 
     <view class="login">
-      <button class="button phone">
+      <button class="button phone" open-type="getPhoneNumber" @getphonenumber="onGetphonenumber">
         <text class="icon icon-phone"></text>
         手机号快捷登录
       </button>
@@ -29,7 +29,28 @@
 </template>
 
 <script setup lang="ts">
-//
+import { postLoginWxMinAPI } from '@/services/login'
+import { onLoad } from '@dcloudio/uni-app'
+
+// 获取code登录凭证
+let code = ''
+onLoad(async () => {
+  const res = await wx.login()
+  code = res.code
+  console.log(code)
+})
+
+// 获取用户手机号码
+const onGetphonenumber: UniHelper.ButtonOnGetphonenumber = async (ev) => {
+  const encryptedData = ev.detail?.encryptedData!
+  const iv = ev.detail?.iv!
+
+  const res = await postLoginWxMinAPI({
+    code,
+    encryptedData,
+    iv,
+  })
+}
 </script>
 
 <style lang="scss">
